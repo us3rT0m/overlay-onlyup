@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OnlyUP main tournament scene</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=aspect-ratio"></script>
+</head>
+
+<body>
+    <div class="bg-[url('bg4.webp')] bg-cover bg-no-repeat w-full h-screen flex">
+        <div class="text-center bg-black/10 w-96 h-screen backdrop-blur-sm relative">
+            <div class="border-b-2 pb-8 font-mono text-black">
+                <img src="./logo2.png" class="">
+            </div>
+            <div class="leaderboard"></div>
+            <p class="text-slate-300 absolute bottom-4 left-12">Overlay made with
+                &hearts;<br />https://github.com/us3rT0m</p>
+        </div>
+        <div class="flex flex-col w-full h-screen justify-between px-8 pt-8 gap-2 pb-2">
+            <div class="player-list flex flex-wrap justify-evenly content-evenly gap-2">
+                <div class="bg-[url('player.webp')] bg-cover bg-no-repeat bg-white aspect-video w-[500px] relative">
+                </div>
+                <div class="bg-[url('player.webp')] bg-cover bg-no-repeat bg-white aspect-video w-[500px] relative">
+                </div>
+                <div class="bg-[url('player.webp')] bg-cover bg-no-repeat bg-white aspect-video w-[500px] relative">
+                </div>
+                <div class="bg-[url('player.webp')] bg-cover bg-no-repeat bg-white aspect-video w-[500px] relative">
+                </div>
+                <div class="bg-[url('player.webp')] bg-cover bg-no-repeat bg-white aspect-video w-[500px] relative">
+                </div>
+                <div class="bg-[url('player.webp')] bg-cover bg-no-repeat bg-white aspect-video w-[500px] relative">
+                </div>
+                <div class="bg-[url('player.webp')] bg-cover bg-no-repeat bg-white aspect-video w-[500px] relative">
+                </div>
+                <div class="bg-[url('player.webp')] bg-cover bg-no-repeat bg-white aspect-video w-[500px] relative">
+                </div>
+                <div
+                    class="bg-[url('host.png')] bg-cover bg-no-repeat bg-white aspect-video w-[500px] relative border-2 border-green-600">
+                </div>
+            </div>
+            <div class="px-4 w-full h-96 bg-white/60 rounded-md flex items-center relative">
+                <p class="text-slate-800 font-semibold mr-1">Donator:</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        function formatTime(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const remainingSeconds = seconds % 60;
+
+            const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+            return formattedTime;
+        }
+
+        const colorLeaderBoard = [
+            "bg-[#FFD700]",
+            "bg-[#C0C0C0]",
+            "bg-[#CD7F32]",
+            "bg-[#FF8C00]",
+            "bg-[#4B0082]",
+            "bg-[#4682B4]",
+            "bg-[#6B8E23]",
+            "bg-[#A9A9A9]"
+        ]
+
+        const players = [
+            {
+                name: "ZHANG WEI YU",
+                time: 143,
+            },
+            {
+                name: "Dofuno-ichi",
+                time: 903,
+            },
+            {
+                name: "Pervuno",
+                time: 698,
+            },
+            {
+                name: "Fejiwen",
+                time: 908,
+            },
+            {
+                name: "Tomper",
+                time: 1060,
+            },
+            {
+                name: "Quoicoubeh",
+                time: 2069,
+            },
+            {
+                name: "Feur",
+                time: 1800,
+            },
+            {
+                name: "Tiplouf",
+                time: 1002,
+            }
+        ]
+
+        // sort player by time then attribute a place to them
+        players.sort((a, b) => a.time - b.time);
+
+        const leaderboard = document.querySelector(".leaderboard");
+
+        // insert players into leaderboard
+        players.forEach((player, index) => {
+            const playerDiv = document.createElement("div");
+            playerDiv.classList.add("border-b", "p-4", "flex", "items-center", colorLeaderBoard[index], "relative");
+            playerDiv.innerHTML = `
+                <div class="font-black bg-black/80 p-2 font-mono text-slate-100 aspect-square w-10 h-10">
+                    <p>${index + 1}</p>
+                </div>
+                <div class="text-left font-mono text-white ml-10">
+                    <h1 class="font-semibold">${player.name}</h1>
+                    <h2 class="font-medium">Time: ${formatTime(player.time)}</h2>
+                </div>
+            `;
+
+            // if player is first, add a crown
+            if (index === 0) {
+                playerDiv.innerHTML += `
+                    <div class="absolute bg-white/50 right-4 p-2 font-mono text-slate-100 aspect-square w-10 h-10 rounded-full">
+                        <p>👑</p>
+                    </div>
+                `;
+            }
+
+            // if player is last, add a poop
+            if (index === players.length - 1) {
+                playerDiv.innerHTML += `
+                    <div class="absolute bg-white/30 right-4 p-2 font-mono text-slate-100 aspect-square w-10 h-10 rounded-full">
+                        <p>💩</p>
+                    </div>
+                `;
+            }
+
+            leaderboard.appendChild(playerDiv);
+
+            // add player name and place to playerlist. Use already existing divs
+            // console.log(index);
+            // playerScreen[index].innerHTML = `
+            //     <div class="absolute bg-black/70 top-0 left-0 p-2 font-mono text-slate-100">
+            //         <p class="font-semibold">${index + 1}# ${player.name}</p>
+            //     </div>
+            // `;
+
+        });
+
+        const Donator = [
+            "ZHANG WEI YU",
+            "Dofuno-ichi",
+            "Pervuno",
+            "Fejiwen",
+            "Tomper",
+            "Quoicoubeh",
+            "Feur",
+            "Tiplouf"
+        ]
+
+        const marqueeCtn = document.querySelector(".marquee-content");
+
+        function createDonor() {
+            const pre = document.createElement("pre");
+            Donator.forEach((donator) => {
+                pre.innerHTML += `    ${donator}`;
+            });
+            marqueeCtn.appendChild(pre);
+        }
+        createDonor();
+        createDonor();
+        createDonor();
+
+    </script>
+</body>
+
+</html>
