@@ -10,19 +10,18 @@
 </head>
 
 <body>
-    <div class="bg-[url('bg4.webp')] bg-cover bg-no-repeat w-full h-screen flex">
+    <div class="bg-[url('bg5.jpg')] bg-cover bg-no-repeat w-full h-screen flex">
         <div class="text-center bg-black/10 w-96 h-screen backdrop-blur-sm relative">
-            <div class="border-b-2 pb-8 font-mono text-black">
-                <img src="./logo2.png" class="">
+            <div class="border-b-2 my-8 font-mono text-black">
+                <img src="./logo4.png" alt="">
+                <h1 class="text-xl text-white font-semibold my-4">FW Tournament final</h1>
             </div>
             <div class="leaderboard"></div>
-            <p class="text-slate-300 absolute bottom-4 left-12">Overlay made with
+            <p class="text-white absolute bottom-4 left-12">Overlay made with
                 &hearts;<br />https://github.com/us3rT0m</p>
         </div>
         <div class="flex flex-col w-full h-screen justify-between px-8 pt-8 gap-2 pb-2">
             <div class="player-list flex flex-wrap justify-evenly content-evenly gap-2">
-                <div class="bg-[url('player.webp')] bg-cover bg-no-repeat bg-white aspect-video w-[500px] relative">
-                </div>
                 <div class="bg-[url('player.webp')] bg-cover bg-no-repeat bg-white aspect-video w-[500px] relative">
                 </div>
                 <div class="bg-[url('player.webp')] bg-cover bg-no-repeat bg-white aspect-video w-[500px] relative">
@@ -42,19 +41,28 @@
                 </div>
             </div>
             <div class="px-4 w-full h-96 bg-white/60 rounded-md flex items-center relative">
-                <p class="text-slate-800 font-semibold mr-1">Donator:</p>
+                <p class="text-slate-800 font-semibold">Donator:</p>
+                <!-- list of donator -->
+                <div class="flex w-full justify-around text-slate-800 font-semibold">
+                    <p>鸡哥加油</p>
+                    <p>Ardnew</p>
+                    <p>Dofuno1</p>
+                    <p>Argon Esports</p>
+                </div>
+
             </div>
         </div>
     </div>
     <script>
-        function formatTime(seconds) {
-            const hours = Math.floor(seconds / 3600);
-            const minutes = Math.floor((seconds % 3600) / 60);
-            const remainingSeconds = seconds % 60;
+        // convert string time to milliseconds
+        function convertToMilliseconds(timeText) {
+            const [minutes, secondsAndMilliseconds] = timeText.split(':');
+            const [seconds, milliseconds] = secondsAndMilliseconds.split('.');
 
-            const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-            return formattedTime;
+            const totalMilliseconds = (parseInt(minutes, 10) * 60 + parseInt(seconds, 10)) * 1000 + parseInt(milliseconds, 10);
+            return totalMilliseconds;
         }
+
 
         const colorLeaderBoard = [
             "bg-[#FFD700]",
@@ -69,55 +77,60 @@
 
         const players = [
             {
-                name: "ZHANG WEI YU",
-                time: 143,
+                name: "WEI YU",
+                time: "5:20.200",
             },
             {
                 name: "Dofuno-ichi",
-                time: 903,
+                time: "15:53.500",
             },
             {
                 name: "Pervuno",
-                time: 698,
+                time: "7:49.900",
             },
             {
                 name: "Fejiwen",
-                time: 908,
+                time: "0:0.000",
             },
             {
                 name: "Tomper",
-                time: 1060,
+                time: "13:10.800",
             },
             {
                 name: "Quoicoubeh",
-                time: 2069,
+                time: "20:22.700",
             },
             {
                 name: "Feur",
-                time: 1800,
+                time: "7:49.600",
             },
-            {
-                name: "Tiplouf",
-                time: 1002,
-            }
         ]
 
         // sort player by time then attribute a place to them
-        players.sort((a, b) => a.time - b.time);
+        players.sort((a, b) => {
+            if (a.time === "0:0.000") return 1;  // Place players with time 0 at the end
+            if (b.time === "0:0.000") return -1; // Place players with time 0 at the end
+
+            const timeA = convertToMilliseconds(a.time);
+            const timeB = convertToMilliseconds(b.time);
+
+            return timeA - timeB;
+        });
+
 
         const leaderboard = document.querySelector(".leaderboard");
 
         // insert players into leaderboard
         players.forEach((player, index) => {
             const playerDiv = document.createElement("div");
-            playerDiv.classList.add("border-b", "p-4", "flex", "items-center", colorLeaderBoard[index], "relative");
+            playerDiv.classList.add("border-b", "p-4", "flex", "items-center", "rounded-tr-lg", colorLeaderBoard[index], "relative");
             playerDiv.innerHTML = `
                 <div class="font-black bg-black/80 p-2 font-mono text-slate-100 aspect-square w-10 h-10">
                     <p>${index + 1}</p>
                 </div>
                 <div class="text-left font-mono text-white ml-10">
                     <h1 class="font-semibold">${player.name}</h1>
-                    <h2 class="font-medium">Time: ${formatTime(player.time)}</h2>
+                    ${player.time === "0:0.000" ? `<h2 class="font-medium">Time: DNF</h2>` : `<h2 class="font-medium">Time: ${player.time}</h2>`}
                 </div>
             `;
 
@@ -140,41 +153,7 @@
             }
 
             leaderboard.appendChild(playerDiv);
-
-            // add player name and place to playerlist. Use already existing divs
-            // console.log(index);
-            // playerScreen[index].innerHTML = `
-            //     <div class="absolute bg-black/70 top-0 left-0 p-2 font-mono text-slate-100">
-            //         <p class="font-semibold">${index + 1}# ${player.name}</p>
-            //     </div>
-            // `;
-
         });
-
-        const Donator = [
-            "ZHANG WEI YU",
-            "Dofuno-ichi",
-            "Pervuno",
-            "Fejiwen",
-            "Tomper",
-            "Quoicoubeh",
-            "Feur",
-            "Tiplouf"
-        ]
-
-        const marqueeCtn = document.querySelector(".marquee-content");
-
-        function createDonor() {
-            const pre = document.createElement("pre");
-            Donator.forEach((donator) => {
-                pre.innerHTML += `    ${donator}`;
-            });
-            marqueeCtn.appendChild(pre);
-        }
-        createDonor();
-        createDonor();
-        createDonor();
-
     </script>
 </body>
 
